@@ -1,4 +1,4 @@
-#include "../openGL-template/src/vao_wrapper.h"
+#include "vao_wrapper.h"
 #include "color.h"
 #include "square.h"
 #include "gameboard_utils.h"
