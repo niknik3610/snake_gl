@@ -1,0 +1,3 @@
+[submodule "openGL-template"]
+	path = openGL-template
+	url = https://github.com/niknik3610/openGL-template
