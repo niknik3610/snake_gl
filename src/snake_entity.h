@@ -5,6 +5,7 @@
 #include "gameboard_utils.h"
 #include "square.h"
 #include "vao_wrapper.h"
+#include "entity.h"
 #include <memory>
 
 enum MovementDirection {
@@ -14,14 +15,13 @@ enum MovementDirection {
     Right
 };
 
-class Snake {
+class Snake : public Entity {
     private:
         static constexpr int MAX_SQUARES = 512;
         static constexpr Color COLR = Color(2, 212, 48);
-        static constexpr MovementDirection defaultMovDirection = Right;
+        static constexpr MovementDirection DEFAULT_MOV_DIR = Right;
 
     public:
-        GameBoardPos currHeadPos;
 
         int squareCount;
         Square* renderSquares[MAX_SQUARES];  
@@ -30,12 +30,16 @@ class Snake {
         Snake(GameBoardPos spawnPos, std::shared_ptr<VaoWrapper> vao, std::shared_ptr<Shader> shader);
         ~Snake();
 
+        virtual void draw() override;
+        virtual GameBoardPos getPos() override;
+
     private:
         Square* makeSquare(GameBoardPos pos);
         std::shared_ptr<VaoWrapper> vao;
         std::shared_ptr<Shader> shader;
 
         MovementDirection currMovDirection;
+        GameBoardPos currHeadPos;
 };
 
 
