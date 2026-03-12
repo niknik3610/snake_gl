@@ -22,19 +22,18 @@ class Snake : public Entity {
         static constexpr MovementDirection DEFAULT_MOV_DIR = Right;
 
     public:
-
         int squareCount;
-        Square* renderSquares[MAX_SQUARES];  
+        std::unique_ptr<Square> renderSquares[MAX_SQUARES];  
         GameBoardPos squarePositions[MAX_SQUARES];
 
         Snake(GameBoardPos spawnPos, std::shared_ptr<VaoWrapper> vao, std::shared_ptr<Shader> shader);
-        ~Snake();
 
         virtual void draw() override;
         virtual GameBoardPos getPos() override;
+        GameBoardPos move(MovVector direction);
 
     private:
-        Square* makeSquare(GameBoardPos pos);
+        std::unique_ptr<Square> makeSquare(GameBoardPos pos);
         std::shared_ptr<VaoWrapper> vao;
         std::shared_ptr<Shader> shader;
 

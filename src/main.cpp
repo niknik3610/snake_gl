@@ -1,13 +1,11 @@
-#include "vao_wrapper.h"
-#include "color.h"
-#include "square.h"
+#include "entity.h"
+#include "entity_manager.h"
+#include "snake_entity.h"
 #include "gameboard_utils.h"
 #include <cstdio>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
-#include "shader.h"
-#include <vector>
 
 extern "C" {
 #include <glad/glad.h>
@@ -56,40 +54,23 @@ int main() {
     glViewport(0, 0, DEFAULT_WINDOW_WIDTH , DEFAULT_WINDOW_HEIGHT);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-
-    Color color(255, 100, 25);
-
+    EntityManager entityManager = EntityManager();
     GameBoardPos squareOnePos{0, 0, 0};
-    Square squareOne(vao, shader, std::move(color.getPrepared()), GameBoardUtils::translateBoardCoordsToGL(squareOnePos));
+    MovVector movVector{1, 1, 0};
 
-    color.modify(25, 50, 25);
-    
-    GameBoardPos squareTwoPos{9, 9, 0};
-    Square squareTwo(vao, shader, std::move(color.getPrepared()), GameBoardUtils::translateBoardCoordsToGL(squareTwoPos));
-
-    MovVector movementOneVec{1, 1, 0};
-    MovVector movementTwoVec{-1, -1, 0};
+    std::unique_ptr<Snake> snake = std::dynamic_pointer_cast<Snake>(entityManager.spawnEntity(EntityType::SnakeType, squareOnePos));
 
     long framecount = 0;
     while(!glfwWindowShouldClose(window))
     {
         std::cout << "frameCount: " << framecount++ << "\n";
-        // squareOnePos.y += 1 % GameBoardUtils::BOARDSIZE.y;
-        if (framecount % 100 == 0) {
-            squareOne.translatePos(GameBoardUtils::translateMovVecToGL(movementOneVec));
-            squareTwo.translatePos(GameBoardUtils::translateMovVecToGL(movementTwoVec));
-        }
 
-        //process logic
-        process_input(window);
+        snake->move();
 
-        //rendering
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //Color stuff            
-        squareOne.draw();
-        squareTwo.draw();
+        snake->draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();    

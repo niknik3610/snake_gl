@@ -18,8 +18,7 @@ EntityManager::EntityManager() : currentEntity(0) {
     }); 
 
     this->vao = std::make_shared<VaoWrapper>(vertices, indices);
-
-    auto shader = std::make_shared<Shader>(VERTEX_SHADER_PATH, FRAG_SHADER_PATH); 
+    this->shader = std::make_shared<Shader>(VERTEX_SHADER_PATH, FRAG_SHADER_PATH); 
 }
 
 
@@ -27,6 +26,7 @@ EntityManager::~EntityManager() {
 }
 
 
+//TODO figure out traits and make this template <typename T>, where T implements Entity. Then this is easy clap
 std::unique_ptr<Entity> EntityManager::spawnEntity(EntityType type, GameBoardPos spawnPos)
 {
     std::unique_ptr<Entity> entity;

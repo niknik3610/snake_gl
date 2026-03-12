@@ -7,7 +7,7 @@ class Entity {
         virtual void draw() = 0;
         virtual GameBoardPos getPos() = 0;
 
-        virtual ~Entity() = 0;
+        virtual ~Entity() = default;
 };
 
 #endif 
